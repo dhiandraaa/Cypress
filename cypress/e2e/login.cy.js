@@ -1,50 +1,55 @@
+import Login from '../pageObject/login.js'
+
 describe('Login', () => {
     beforeEach(() => {
         cy.visit('http://localhost:3000')
     })
+
+    const login=new Login();
   
     it('Success login', () => {
       // type username
-      cy.get('#username').type('admin')
-      cy.get('#username').should('have.value', 'admin')
+      login.setUsername('admin')
+      login.getUsername('admin')
   
       // type password
-      cy.get('#password').type('123456')
-      cy.get('#password').should('have.value', '123456')
+      login.setPassword('123456')
+      login.getPassword('123456')
   
-      cy.get('#loginForm').submit()
+      // click Login button
+      login.clickLogin()
   
-      
       // assert the warning message
-      cy.get('#loginMessage').first().should('have.text', 'Login successful!')
+      login.getMessage('Login successful!')
     })
   
     it('Failed login', () => {
       // type username
-      cy.get('#username').type('user')
-      cy.get('#username').should('have.value', 'user')
+      login.setUsername('user')
+      login.getUsername('user')
     
       // type password
-      cy.get('#password').type('123456')
-      cy.get('#password').should('have.value', '123456')
-    
-      cy.get('#loginForm').submit()
+      login.setPassword('123456')
+      login.getPassword('123456')
+  
+      // click Login button
+      login.clickLogin()
     
       // assert the warning message
-      cy.get('#loginMessage').first().should('have.text', 'Invalid username or password.')
+      login.getMessage('Invalid username or password.')
     })
   
       it('Empty login', () => {
-        // type username
-        cy.get('#username').clear()
+        // blank username
+        login.deleteUsername()
       
-        // type password
-        cy.get('#password').clear()
+        // blank password
+        login.deletePassword()
       
         // click Login button
-        cy.get('#loginForm').submit()
-      
+        login.clickLogin()
+  
         // assert the warning message
-        cy.get('#loginMessage').first().should('have.text', 'Please enter both username and password.')
+        login.getMessage('Please enter both username and password.')
       })
   })
